@@ -8,11 +8,12 @@ app.get('/sitemap.json', (req, res) => {
   res.send('sitemap')
 })
 
-app.get('/favicon.ico', (req, res) => {
-  axios.get(domain + '/favicon.ico').then(favicon => {
-    res.sendFile(favicon)
+app.get('/favicon.png', (req, res) => {
+  axios.get(domain + '/favicon.png', { responseType: 'arraybuffer' }).then(response => {
+    res.contentType('image/png');
+    res.send(new Buffer(response.data));
   })
-  .catch(() => {
+  .catch(err => {
     res.status(404).send()
   })
 })
