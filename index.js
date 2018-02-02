@@ -1,6 +1,8 @@
 const axios = require('axios')
 const express = require('express')
+var cors = require('cors')
 const app = express()
+app.use(cors())
 
 const domain = 'http://localhost:4141'
 
