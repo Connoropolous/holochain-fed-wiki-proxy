@@ -5,7 +5,13 @@ const app = express()
 const domain = 'http://localhost:4141'
 
 app.get('/sitemap.json', (req, res) => {
-  res.send('sitemap')
+  holochain('pages', 'getSitemap')
+  .then(response => {
+    res.send(response.data)
+  })
+  .catch(err => {
+    res.sendStatus(404)
+  })
 })
 
 app.get('/favicon.png', (req, res) => {
@@ -14,22 +20,24 @@ app.get('/favicon.png', (req, res) => {
     res.send(new Buffer(response.data));
   })
   .catch(err => {
-    res.status(404).send()
+    res.sendStatus(404)
   })
 })
 
 app.get('/:slug', (req, res) => {
   // welcome.json becomes welcome
   var slug = req.params.slug.split('.')[0]
-  holochain('pages', 'getPageBySlug', {
+  holochain('pages', 'getFedWikiJSON', {
     slug: slug
   })
   .then(response => {
+    if (!response.data) {
+      throw new Error("no page found")
+    }
     res.send(response.data)
   })
   .catch(err => {
-    console.log(err)
-    res.status(404).send(err)
+    res.sendStatus(404)
   })
 })
 
