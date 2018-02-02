@@ -18,11 +18,11 @@ app.get('/favicon.png', (req, res) => {
   })
 })
 
-app.get('/:pageTitle', (req, res) => {
+app.get('/:slug', (req, res) => {
   // welcome.json becomes welcome
-  var pageTitle = req.params.pageTitle.split('.')[0]
-  holochain('pages', 'getPageByTitle', {
-    pageTitle: pageTitle
+  var slug = req.params.slug.split('.')[0]
+  holochain('pages', 'getPageBySlug', {
+    slug: slug
   })
   .then(response => {
     res.send(response.data)
